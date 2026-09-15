@@ -19,7 +19,22 @@ Stack: Next.js 14 (App Router) + TypeScript + Tailwind CSS + PostgreSQL + Prisma
 | UI primitives | `src/components/ui/` |
 | Site shell | `src/components/site/Header.tsx`, `src/components/site/Footer.tsx`, `src/app/layout.tsx` |
 
-## Setup
+## Stage 2 delivered
+
+| Area | Files |
+|---|---|
+| Homepage | `src/app/page.tsx` |
+| Data layer | `src/lib/queries.ts` |
+| Product card, grid | `src/components/shop/ProductCard.tsx`, `src/components/shop/ProductSection.tsx` |
+| Homepage sections | `src/components/home/Hero.tsx`, `CategoryStrip.tsx`, `FlashDeals.tsx`, `WhyChooseUs.tsx`, `Testimonials.tsx`, `Newsletter.tsx` |
+| Supporting UI | `src/components/ui/ProductThumb.tsx`, `src/components/ui/Rating.tsx` |
+| Newsletter endpoint | `src/app/api/newsletter/route.ts` |
+
+## Deploying
+
+See **DEPLOYMENT.md** for the full GitHub and Vercel walkthrough.
+
+## Local setup
 
 ```bash
 # 1. Install dependencies
@@ -70,7 +85,7 @@ The section heading device (`.rule-heading`) repeats the vertical rule from the 
 ## Build plan
 
 1. **Stage 1, done.** Foundation, schema, design system, site shell.
-2. **Stage 2.** Storefront homepage: hero banner, category grid, featured products, new arrivals, best sellers, deals strip, why choose us, testimonials, newsletter.
+2. **Stage 2, done.** Storefront homepage: hero with live spotlight deal, category grid, featured products, countdown deals strip, new arrivals, best sellers, why choose us, testimonials, newsletter capture, organization structured data.
 3. **Stage 3.** Shop listing, search, filtering, sorting, pagination, product details page.
 4. **Stage 4.** Cart, wishlist, customer accounts, multi-step checkout, order creation and tracking.
 5. **Stage 5.** Admin authentication, role based access control, admin dashboard with analytics.

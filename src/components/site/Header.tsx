@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 export function Header({
   cartCount = 0,
   wishlistCount = 0,
-  phone = '0803 000 0000'
+  phone = ''
 }: {
   cartCount?: number;
   wishlistCount?: number;
@@ -44,10 +44,12 @@ export function Header({
               Warranty backed on every new unit
             </span>
           </div>
-          <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-1.5 hover:text-brand-line">
-            <Phone size={14} aria-hidden />
-            {phone}
-          </a>
+          {phone ? (
+            <a href={`tel:${phone.replace(/\s/g, '')}`} className="inline-flex items-center gap-1.5 hover:text-brand-line">
+              <Phone size={14} aria-hidden />
+              {phone}
+            </a>
+          ) : null}
         </div>
       </div>
 

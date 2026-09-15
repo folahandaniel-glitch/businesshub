@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { siteConfig } from '@/lib/site-config';
+import { getSiteSettings } from '@/lib/queries';
 
 const display = Archivo({
   subsets: ['latin'],
@@ -37,26 +38,16 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  /*
-   * Contact and social values are read from the database in stage 2,
-   * once the settings modules are wired. The fallbacks below keep a
-   * fresh install renderable.
-   */
-  const contact = {
-    primaryPhone: '0803 000 0000',
-    whatsappNumber: '0803 000 0000',
-    email: 'sales@businesshubcomputers.com',
-    address: 'Head office address, Nigeria',
-    openingHours: 'Monday to Saturday, 8:00am to 6:00pm'
-  };
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Contact details and social links are managed by the Super Admin.
+  const { contact, socials } = await getSiteSettings();
 
   return (
     <html lang="en-NG" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col">
-        <Header phone={contact.primaryPhone} />
+        <Header phone={contact?.primaryPhone ?? ''} />
         <main className="flex-1">{children}</main>
-        <Footer contact={contact} socials={[]} />
+        <Footer contact={contact ?? undefined} socials={socials} />
       </body>
     </html>
   );
