@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --shell-pad: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --shell-pad: 2rem;
+    }
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-mist text-slate-deep font-sans antialiased;
+    font-feature-settings: 'cv05', 'ss01';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-ink;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  /* Visible keyboard focus everywhere, never removed. */
+  :focus-visible {
+    outline: 3px solid theme('colors.brand.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Page gutter used by every section so widths never drift. */
+  .shell {
+    @apply mx-auto w-full max-w-shell;
+    padding-left: var(--shell-pad);
+    padding-right: var(--shell-pad);
+  }
+
+  /*
+   * Section heading device borrowed from the logo, where a vertical
+   * rule divides the BH mark from the wordmark. Red rule, navy text.
+   */
+  .rule-heading {
+    @apply relative pl-4 font-display text-xl font-bold text-ink md:text-2xl;
+  }
+
+  .rule-heading::before {
+    content: '';
+    @apply absolute left-0 top-1 bottom-1 w-[4px] rounded-sm bg-scarlet;
+  }
+
+  .hairline {
+    @apply border border-line;
+  }
+
+  .link-quiet {
+    @apply text-slate transition-colors duration-150 ease-swift hover:text-brand;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
