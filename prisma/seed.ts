@@ -270,7 +270,7 @@ const PRODUCTS: DemoProduct[] = [
     featured: true,
     description:
       'A complete entry-level surveillance package for shops and small offices, including DVR, cameras, cabling and power supply.',
-    specs: { Channels: '4', Resolution: '1080p', Night vision: 'Up to 20 metres', Storage: 'Supports up to 4TB' }
+    specs: { Channels: '4', Resolution: '1080p', 'Night vision': 'Up to 20 metres', Storage: 'Supports up to 4TB' }
   }
 ];
 
