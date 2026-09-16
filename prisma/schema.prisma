@@ -646,3 +646,17 @@ model NewsletterSubscriber {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 }
+
+model ContactMessage {
+  id         String   @id @default(cuid())
+  fullName   String
+  email      String
+  phone      String?
+  subject    String?
+  message    String
+  isRead     Boolean  @default(false)
+  respondedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([isRead, createdAt])
+}

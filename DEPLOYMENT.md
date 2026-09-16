@@ -6,6 +6,21 @@ Follow these steps in order. Nothing is skipped.
 
 ---
 
+## Updating an existing deployment
+
+If you already have this project live and are pulling in a newer version, the database schema may have
+changed (for example, the contact form now stores messages in a new `ContactMessage` table). After pushing
+updated code, run this once against your live database before the new features will work:
+
+```bash
+npm run db:push
+```
+
+Skipping this step means pages will load, but anything relying on the new table (such as submitting the
+Contact form) will fail. This is a one-time step per schema change, not something you run on every deploy.
+
+---
+
 ## 1. Requirements on your computer
 
 - Node.js version 18.17 or newer. Check with `node -v`.

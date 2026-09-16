@@ -325,9 +325,9 @@ async function main() {
       whatsappNumber: '0803 000 0000',
       email: 'sales@businesshubcomputers.com',
       supportEmail: 'support@businesshubcomputers.com',
-      address: 'Head office address, Nigeria',
+      address: 'Oketedo, 9VRM+896, Iya Olobe Oketedo Street, Ibadan 200284, Oyo, Nigeria',
       openingHours: 'Monday to Saturday, 8:00am to 6:00pm',
-      mapsLink: ''
+      mapsLink: 'https://www.google.com/maps/search/?api=1&query=9VRM%2B896+Iya+Olobe+Oketedo+Street+Ibadan+Oyo+Nigeria'
     }
   });
 
