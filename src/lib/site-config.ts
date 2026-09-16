@@ -1,3 +1,26 @@
+const DEFAULT_SITE_URL = 'https://www.businesshubcomputers.com';
+
+/**
+ * Reads NEXT_PUBLIC_SITE_URL and always returns a valid absolute URL string.
+ *
+ * A plain `??` fallback only catches undefined/null. On Vercel it is easy
+ * to add an environment variable and leave its value blank, which sets it
+ * to an empty string rather than leaving it unset - `??` would not catch
+ * that, and `new URL('')` throws and fails the entire build. This checks
+ * for a non-empty value explicitly, and validates the result really is a
+ * parseable URL before trusting it, so a malformed value (e.g. a value
+ * missing "https://") falls back safely instead of crashing the build.
+ */
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return DEFAULT_SITE_URL;
+  try {
+    return new URL(raw).toString().replace(/\/$/, '');
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
 /**
  * Fallback site values. Live values are served from the
  * BusinessInformation, ContactInformation and SocialLink tables
@@ -8,7 +31,7 @@ export const siteConfig = {
   shortName: 'Business-Hub',
   registrationNumber: 'RC: 3001886',
   tagline: 'Computers, components and office technology, sourced and supported in Nigeria.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.businesshubcomputers.com'
+  url: resolveSiteUrl()
 };
 
 export const primaryNav = [

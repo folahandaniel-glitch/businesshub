@@ -20,8 +20,19 @@ const body = Inter({
   display: 'swap'
 });
 
+// siteConfig.url is already validated, but metadataBase is optional in
+// Next.js metadata, so a second guard here costs nothing and means this
+// line can never be the thing that fails a build again.
+function safeMetadataBase(): URL | undefined {
+  try {
+    return new URL(siteConfig.url);
+  } catch {
+    return undefined;
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: safeMetadataBase(),
   title: {
     default: `${siteConfig.name} | Laptops, computers and office technology in Nigeria`,
     template: `%s | ${siteConfig.name}`
