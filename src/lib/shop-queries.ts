@@ -85,7 +85,7 @@ export async function getShopResults(filters: ShopFilters) {
     const page = Math.max(1, filters.page ?? 1);
     const orderBy = SORT_MAP[filters.sort ?? 'relevance'];
 
-    const [rows, total, brandRows, bounds, category] = await prisma.$transaction([
+    const [rows, total, brandRows, bounds, category] = await Promise.all([
       prisma.product.findMany({
         where,
         select: cardSelect,
