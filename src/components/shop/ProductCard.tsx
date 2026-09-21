@@ -1,14 +1,23 @@
 import Link from 'next/link';
-import { Heart, ShoppingCart } from 'lucide-react';
 import { ProductThumb } from '@/components/ui/ProductThumb';
 import { Badge } from '@/components/ui/Badge';
 import { Rating } from '@/components/ui/Rating';
 import { Price } from '@/components/ui/Price';
 import { StockPill } from '@/components/ui/StockPill';
+import { AddToCartButton } from './AddToCartButton';
+import { WishlistButton } from './WishlistButton';
 import { discountPercent, cn } from '@/lib/utils';
 import type { ProductCardData } from '@/lib/queries';
 
-export function ProductCard({ product, className }: { product: ProductCardData; className?: string }) {
+export function ProductCard({
+  product,
+  className,
+  initiallyInWishlist = false
+}: {
+  product: ProductCardData;
+  className?: string;
+  initiallyInWishlist?: boolean;
+}) {
   const off = discountPercent(product.price, product.previousPrice);
   const soldOut = product.stockQuantity <= 0;
 
@@ -28,13 +37,11 @@ export function ProductCard({ product, className }: { product: ProductCardData; 
           {product.condition === 'REFURBISHED' ? <Badge tone="neutral">Refurbished</Badge> : null}
         </div>
 
-        <button
-          type="button"
-          aria-label={`Add ${product.name} to wishlist`}
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-pill border border-line bg-white text-slate transition-colors hover:border-scarlet hover:text-scarlet"
-        >
-          <Heart size={17} />
-        </button>
+        <WishlistButton
+          productId={product.id}
+          initiallySaved={initiallyInWishlist}
+          className="absolute right-3 top-3 bg-white"
+        />
 
         {soldOut ? (
           <div className="absolute inset-x-0 bottom-0 bg-ink/85 py-1.5 text-center text-xs font-semibold text-white">
@@ -58,15 +65,7 @@ export function ProductCard({ product, className }: { product: ProductCardData; 
           <Price price={product.price} previousPrice={product.previousPrice} />
           <div className="flex items-center justify-between gap-2">
             <StockPill quantity={product.stockQuantity} minStockLevel={product.minStockLevel} />
-            <button
-              type="button"
-              disabled={soldOut}
-              aria-label={`Add ${product.name} to cart`}
-              className="relative z-10 inline-flex h-9 items-center gap-1.5 rounded-card bg-brand px-3 text-sm font-semibold text-white transition-colors hover:bg-brand-soft disabled:bg-line disabled:text-slate"
-            >
-              <ShoppingCart size={15} aria-hidden />
-              Add
-            </button>
+            <AddToCartButton productId={product.id} soldOut={soldOut} />
           </div>
         </div>
       </div>

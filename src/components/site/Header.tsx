@@ -21,11 +21,13 @@ import { cn } from '@/lib/utils';
 export function Header({
   cartCount = 0,
   wishlistCount = 0,
-  phone = ''
+  phone = '',
+  customerName
 }: {
   cartCount?: number;
   wishlistCount?: number;
   phone?: string;
+  customerName?: string | null;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -92,7 +94,11 @@ export function Header({
         </form>
 
         <div className="ml-auto flex items-center gap-1 md:gap-2">
-          <IconLink href="/account" label="Account" icon={<User size={21} />} />
+          <IconLink
+            href="/account"
+            label={customerName ? customerName.split(' ')[0] : 'Sign in'}
+            icon={<User size={21} />}
+          />
           <IconLink href="/wishlist" label="Wishlist" icon={<Heart size={21} />} count={wishlistCount} />
           <IconLink href="/cart" label="Cart" icon={<ShoppingCart size={21} />} count={cartCount} accent />
         </div>

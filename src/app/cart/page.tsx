@@ -1,16 +1,19 @@
 import type { Metadata } from 'next';
-import { ShoppingCart } from 'lucide-react';
-import { ComingSoon } from '@/components/ui/ComingSoon';
+import { CartView } from '@/components/cart/CartView';
+import { getCart } from '@/lib/cart';
 
 export const metadata: Metadata = { title: 'Your cart' };
+export const dynamic = 'force-dynamic';
 
-export default function CartPage() {
+export default async function CartPage() {
+  const cart = await getCart();
+
   return (
-    <ComingSoon
-      icon={<ShoppingCart size={26} />}
-      title="Cart is being built"
-      body="A saved cart with real checkout, delivery pricing and payment is coming in the next stage. Browse the shop and note down anything you want, no items will be lost between now and then."
-      stage="Stage 4"
-    />
+    <div className="shell py-8 md:py-10">
+      <h1 className="rule-heading text-2xl md:text-3xl">Your cart</h1>
+      <div className="mt-6">
+        <CartView initialCart={cart} />
+      </div>
+    </div>
   );
 }

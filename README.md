@@ -30,6 +30,32 @@ Stack: Next.js 14 (App Router) + TypeScript + Tailwind CSS + PostgreSQL + Prisma
 | Supporting UI | `src/components/ui/ProductThumb.tsx`, `src/components/ui/Rating.tsx` |
 | Newsletter endpoint | `src/app/api/newsletter/route.ts` |
 
+## Stage 3 delivered
+
+| Area | Files |
+|---|---|
+| Shop listing, search, filters, sort, pagination | `src/app/shop/page.tsx`, `src/lib/shop-queries.ts` |
+| Categories index and category pages | `src/app/categories/page.tsx`, `src/app/categories/[slug]/page.tsx` |
+| Deals page | `src/app/deals/page.tsx` |
+| Product detail page | `src/app/product/[slug]/page.tsx`, `src/components/product/` |
+| Shop UI | `src/components/shop/FilterSidebar.tsx`, `SortBar.tsx`, `Pagination.tsx`, `ProductGrid.tsx` |
+| About, Contact (real form), legal pages | `src/app/about`, `src/app/contact`, `src/app/privacy`, `src/app/terms`, `src/app/shipping`, `src/app/returns` |
+| Contact form endpoint | `src/app/api/contact/route.ts` (writes to the `ContactMessage` table) |
+| Honest "coming soon" pages for what stage 4/5 delivers | `src/components/ui/ComingSoon.tsx` |
+
+## Stage 4 delivered
+
+| Area | Files |
+|---|---|
+| Session and customer auth | `src/lib/session.ts`, `src/lib/customer-auth.ts` |
+| Guest-cart cookie assignment | `src/middleware.ts` (cookies can only be written in middleware/Route Handlers/Server Actions, never in a page render - this is why the guest cart id is assigned here) |
+| Cart data layer and API | `src/lib/cart.ts`, `src/app/api/cart/**` |
+| Wishlist data layer and API | `src/lib/wishlist.ts`, `src/app/api/wishlist/route.ts` |
+| Checkout (atomic order creation, stock decrement) | `src/lib/checkout.ts`, `src/app/api/checkout/route.ts` |
+| Delivery fee estimate (placeholder until stage 9's courier integration) | `src/lib/delivery.ts` |
+| Order lookups | `src/lib/orders.ts` |
+| Login, register, cart, wishlist, account, order pages | `src/app/login`, `src/app/register`, `src/app/cart`, `src/app/wishlist`, `src/app/account/**`, `src/app/checkout`, `src/app/order-confirmation/[orderNumber]` |
+
 ## Deploying
 
 See **DEPLOYMENT.md** for the full GitHub and Vercel walkthrough.
@@ -86,8 +112,8 @@ The section heading device (`.rule-heading`) repeats the vertical rule from the 
 
 1. **Stage 1, done.** Foundation, schema, design system, site shell.
 2. **Stage 2, done.** Storefront homepage: hero with live spotlight deal, category grid, featured products, countdown deals strip, new arrivals, best sellers, why choose us, testimonials, newsletter capture, organization structured data.
-3. **Stage 3.** Shop listing, search, filtering, sorting, pagination, product details page.
-4. **Stage 4.** Cart, wishlist, customer accounts, multi-step checkout, order creation and tracking.
+3. **Stage 3, done.** Shop listing, search, filtering, sorting, pagination, product details page, About/Contact/legal pages.
+4. **Stage 4, done.** Cart, wishlist, customer accounts, checkout, order creation and tracking.
 5. **Stage 5.** Admin authentication, role based access control, admin dashboard with analytics.
 6. **Stage 6.** Product, category and inventory management modules.
 7. **Stage 7.** Order management, Super Admin controls, admin and permission management, task management.

@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Heart, ShoppingCart, Zap, Share2, ShieldCheck, Truck, Check } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ShoppingCart, Zap, Share2, ShieldCheck, Truck, Check } from 'lucide-react';
 import { Price } from '@/components/ui/Price';
 import { StockPill } from '@/components/ui/StockPill';
 import { Button } from '@/components/ui/Button';
+import { WishlistButton } from '@/components/shop/WishlistButton';
 
 export function PurchasePanel({
   productId,
@@ -13,7 +15,8 @@ export function PurchasePanel({
   stockQuantity,
   minStockLevel,
   warrantyInfo,
-  sku
+  sku,
+  initiallySaved = false
 }: {
   productId: string;
   price: number;
@@ -22,16 +25,50 @@ export function PurchasePanel({
   minStockLevel: number;
   warrantyInfo: string | null;
   sku: string;
+  initiallySaved?: boolean;
 }) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'adding' | 'added' | 'buying' | 'error'>('idle');
+  const [error, setError] = useState('');
   const soldOut = stockQuantity <= 0;
 
-  function addToCart() {
-    // Cart persistence lands in the next stage. This confirms the intended
-    // action without pretending a real cart exists yet.
-    setAdded(true);
-    window.setTimeout(() => setAdded(false), 2000);
+  async function addToCart(): Promise<boolean> {
+    setStatus('adding');
+    setError('');
+    try {
+      const res = await fetch('/api/cart/items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, quantity })
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? 'Could not add to cart.');
+      }
+      return true;
+    } catch (err) {
+      setStatus('error');
+      setError(err instanceof Error ? err.message : 'Could not add to cart.');
+      return false;
+    }
+  }
+
+  async function onAddToCart() {
+    const success = await addToCart();
+    if (success) {
+      setStatus('added');
+      router.refresh();
+      window.setTimeout(() => setStatus('idle'), 2000);
+    }
+  }
+
+  async function onBuyNow() {
+    setStatus('buying');
+    const success = await addToCart();
+    if (success) {
+      router.push('/checkout');
+    }
   }
 
   return (
@@ -70,30 +107,48 @@ export function PurchasePanel({
         </div>
       ) : null}
 
+      {status === 'error' ? (
+        <p className="mt-3 text-sm font-medium text-scarlet" role="alert">
+          {error}
+        </p>
+      ) : null}
+
       <div className="mt-5 flex flex-col gap-2.5">
-        <Button variant="primary" size="lg" onClick={addToCart} disabled={soldOut} className="w-full">
-          {added ? (
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={onAddToCart}
+          disabled={soldOut || status === 'adding' || status === 'buying'}
+          className="w-full"
+        >
+          {status === 'added' ? (
             <>
               <Check size={18} aria-hidden /> Added to cart
             </>
           ) : (
             <>
-              <ShoppingCart size={18} aria-hidden /> {soldOut ? 'Out of stock' : 'Add to cart'}
+              <ShoppingCart size={18} aria-hidden />
+              {soldOut ? 'Out of stock' : status === 'adding' ? 'Adding' : 'Add to cart'}
             </>
           )}
         </Button>
-        <Button variant="accent" size="lg" disabled={soldOut} className="w-full">
-          <Zap size={18} aria-hidden /> Buy now
+        <Button
+          variant="accent"
+          size="lg"
+          onClick={onBuyNow}
+          disabled={soldOut || status === 'adding' || status === 'buying'}
+          className="w-full"
+        >
+          <Zap size={18} aria-hidden /> {status === 'buying' ? 'Preparing checkout' : 'Buy now'}
         </Button>
         <div className="flex gap-2.5">
+          <WishlistButton productId={productId} initiallySaved={initiallySaved} showLabel className="flex-1" />
           <button
             type="button"
-            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-card border border-line text-sm font-semibold text-ink hover:border-scarlet hover:text-scarlet"
-          >
-            <Heart size={16} aria-hidden /> Wishlist
-          </button>
-          <button
-            type="button"
+            onClick={() => {
+              if (navigator.share) navigator.share({ title: document.title, url: window.location.href });
+              else navigator.clipboard.writeText(window.location.href);
+            }}
             className="flex h-11 flex-1 items-center justify-center gap-2 rounded-card border border-line text-sm font-semibold text-ink hover:border-brand hover:text-brand"
           >
             <Share2 size={16} aria-hidden /> Share

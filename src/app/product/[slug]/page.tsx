@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import { getProductDetail } from '@/lib/shop-queries';
+import { isInWishlist } from '@/lib/wishlist';
 import { Gallery } from '@/components/product/Gallery';
 import { SpecTable } from '@/components/product/SpecTable';
 import { ReviewList } from '@/components/product/ReviewList';
@@ -33,6 +34,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
   if (!data) notFound();
 
   const { product, reviews, related } = data;
+  const savedToWishlist = await isInWishlist(product.id);
   const conditionLabel =
     product.condition === 'NEW' ? 'New' : product.condition === 'REFURBISHED' ? 'Refurbished' : 'UK used';
 
@@ -100,6 +102,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             minStockLevel={product.minStockLevel}
             warrantyInfo={product.warrantyInfo}
             sku={product.sku}
+            initiallySaved={savedToWishlist}
           />
         </div>
       </div>

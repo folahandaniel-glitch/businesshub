@@ -5,6 +5,9 @@ import { Header } from '@/components/site/Header';
 import { Footer } from '@/components/site/Footer';
 import { siteConfig } from '@/lib/site-config';
 import { getSiteSettings } from '@/lib/queries';
+import { getCartItemCount } from '@/lib/cart';
+import { getWishlistCount } from '@/lib/wishlist';
+import { getCurrentCustomer } from '@/lib/orders';
 
 const display = Archivo({
   subsets: ['latin'],
@@ -51,12 +54,26 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Contact details and social links are managed by the Super Admin.
-  const { contact, socials } = await getSiteSettings();
+  // Cart count, wishlist count and the signed-in customer are per-visitor,
+  // read fresh on every request via Promise.all - these are independent
+  // reads across separate data-access modules, not a single Prisma
+  // transaction, so there is no atomicity to lose here.
+  const [{ contact, socials }, cartCount, wishlistCount, customer] = await Promise.all([
+    getSiteSettings(),
+    getCartItemCount(),
+    getWishlistCount(),
+    getCurrentCustomer()
+  ]);
 
   return (
     <html lang="en-NG" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col">
-        <Header phone={contact?.primaryPhone ?? ''} />
+        <Header
+          phone={contact?.primaryPhone ?? ''}
+          cartCount={cartCount}
+          wishlistCount={wishlistCount}
+          customerName={customer?.fullName}
+        />
         <main className="flex-1">{children}</main>
         <Footer contact={contact ?? undefined} socials={socials} />
       </body>
