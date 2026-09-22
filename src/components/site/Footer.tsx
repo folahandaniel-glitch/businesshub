@@ -77,16 +77,22 @@ export function Footer({
       </div>
 
       <div className="border-t border-white/10">
-        <div className="shell flex flex-col gap-2 py-5 text-xs text-white/55 md:flex-row md:items-center md:justify-between">
-          <p>
-            &copy; {new Date().getFullYear()} {siteConfig.name}. {siteConfig.registrationNumber}. All rights reserved.
-          </p>
-          <div className="flex gap-5">
+        <div className="shell flex flex-col gap-3 py-5 text-xs text-white/55 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1">
+            <p>
+              &copy; {new Date().getFullYear()} {siteConfig.name}. {siteConfig.registrationNumber}. All rights reserved.
+            </p>
+            <p>Powered by Fodan Softnet Inc (08067578112, folahandaniel@gmail.com)</p>
+          </div>
+          <div className="flex flex-wrap gap-5">
             <Link href="/privacy" className="hover:text-white">
               Privacy policy
             </Link>
             <Link href="/terms" className="hover:text-white">
               Terms and conditions
+            </Link>
+            <Link href="/admin" className="hover:text-white">
+              Backend
             </Link>
           </div>
         </div>

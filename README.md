@@ -56,6 +56,21 @@ Stack: Next.js 14 (App Router) + TypeScript + Tailwind CSS + PostgreSQL + Prisma
 | Order lookups | `src/lib/orders.ts` |
 | Login, register, cart, wishlist, account, order pages | `src/app/login`, `src/app/register`, `src/app/cart`, `src/app/wishlist`, `src/app/account/**`, `src/app/checkout`, `src/app/order-confirmation/[orderNumber]` |
 
+## Stage 5 delivered
+
+| Area | Files |
+|---|---|
+| Admin session (separate from customer sessions) | `src/lib/admin-session.ts` |
+| Admin login, logout, forced password change | `src/lib/admin-auth.ts`, `src/app/api/admin/auth/**` |
+| Role based access control helper | `src/lib/admin-permissions.ts` (Super Admin always passes; regular Admins checked against their granted `AdminPermission` rows) |
+| Guest-visitor cookie assignment | `src/middleware.ts` (cookies can only be written in middleware/Route Handlers/Server Actions, never in a page render) |
+| Admin dashboard analytics | `src/lib/admin-dashboard.ts` - total/today/month sales, order counts by status, low/out of stock counts, revenue chart (30 days), recent orders, recent customers, top selling products |
+| Admin shell (sidebar, topbar) | `src/components/admin/AdminSidebar.tsx`, `AdminTopbar.tsx` |
+| Protected admin layout | `src/app/admin/(dashboard)/layout.tsx` (redirects to `/admin/login` if signed out, to `/admin/change-password` if a password change is required) |
+| Admin dashboard page | `src/app/admin/(dashboard)/page.tsx` |
+| Full admin navigation, honest "coming soon" for every section not yet built | `src/lib/admin-nav.ts`, `src/app/admin/(dashboard)/[...section]/page.tsx` |
+| First Super Admin | Created via `npm run setup:admin` (from stage 1) - no public admin registration exists, matching the spec's rule that only a Super Admin can create other admins |
+
 ## Deploying
 
 See **DEPLOYMENT.md** for the full GitHub and Vercel walkthrough.
@@ -114,7 +129,7 @@ The section heading device (`.rule-heading`) repeats the vertical rule from the 
 2. **Stage 2, done.** Storefront homepage: hero with live spotlight deal, category grid, featured products, countdown deals strip, new arrivals, best sellers, why choose us, testimonials, newsletter capture, organization structured data.
 3. **Stage 3, done.** Shop listing, search, filtering, sorting, pagination, product details page, About/Contact/legal pages.
 4. **Stage 4, done.** Cart, wishlist, customer accounts, checkout, order creation and tracking.
-5. **Stage 5.** Admin authentication, role based access control, admin dashboard with analytics.
+5. **Stage 5, done.** Admin authentication, role based access control, admin dashboard with analytics.
 6. **Stage 6.** Product, category and inventory management modules.
 7. **Stage 7.** Order management, Super Admin controls, admin and permission management, task management.
 8. **Stage 8.** Marketing (discounts, coupons, banners), reviews, site settings (social, contact, business), notifications, audit logs, reports and exports.
