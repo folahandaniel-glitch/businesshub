@@ -1,6 +1,7 @@
 import { prisma } from './prisma';
 import { getAdminSession, type AdminSessionPayload } from './admin-session';
 import { AdminRole, type PermissionKey } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 export type CurrentAdmin = {
   id: string;
@@ -65,4 +66,28 @@ export async function hasPermission(admin: CurrentAdmin, key: PermissionKey, act
   } catch {
     return false;
   }
+}
+
+/**
+ * The single check every admin API route makes before doing anything:
+ * not signed in -> 401, signed in but lacking the specific permission for
+ * this action -> 403, otherwise the caller gets the admin back and
+ * proceeds. Keeping this in one place means every admin route enforces
+ * RBAC the same way rather than each one reimplementing the check.
+ */
+export async function requireAdminPermission(
+  key: PermissionKey,
+  action: PermissionAction = 'view'
+): Promise<{ admin: CurrentAdmin } | { response: NextResponse }> {
+  const admin = await getCurrentAdmin();
+  if (!admin) {
+    return { response: NextResponse.json({ error: 'Not signed in.' }, { status: 401 }) };
+  }
+
+  const allowed = await hasPermission(admin, key, action);
+  if (!allowed) {
+    return { response: NextResponse.json({ error: 'You do not have permission to do this.' }, { status: 403 }) };
+  }
+
+  return { admin };
 }
