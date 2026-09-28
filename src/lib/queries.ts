@@ -74,16 +74,17 @@ export async function getHomepageData() {
 /** Contact and social values for the footer, controlled from the admin backend. */
 export async function getSiteSettings() {
   try {
-    const [contact, socials] = await prisma.$transaction([
+    const [contact, socials, business] = await prisma.$transaction([
       prisma.contactInformation.findUnique({ where: { id: 'singleton' } }),
       prisma.socialLink.findMany({
         where: { isActive: true, NOT: { url: '' } },
         orderBy: { sortOrder: 'asc' },
         select: { platform: true, url: true }
-      })
+      }),
+      prisma.businessInformation.findUnique({ where: { id: 'singleton' } })
     ]);
-    return { contact, socials };
+    return { contact, socials, business };
   } catch {
-    return { contact: null, socials: [] };
+    return { contact: null, socials: [], business: null };
   }
 }

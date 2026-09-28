@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { getSiteSettings } from '@/lib/queries';
 
@@ -26,6 +26,14 @@ export default async function ContactPage() {
           {contact?.primaryPhone ? (
             <ContactRow icon={<Phone size={18} />} label="Call us" value={contact.primaryPhone} href={`tel:${contact.primaryPhone}`} />
           ) : null}
+          {contact?.whatsappNumber ? (
+            <ContactRow
+              icon={<MessageCircle size={18} />}
+              label="WhatsApp"
+              value={contact.whatsappNumber}
+              href={`https://wa.me/${contact.whatsappNumber.replace(/\D/g, '')}`}
+            />
+          ) : null}
           {contact?.email ? (
             <ContactRow icon={<Mail size={18} />} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
           ) : null}
@@ -36,6 +44,9 @@ export default async function ContactPage() {
               value={contact.address}
               href={contact.mapsLink || undefined}
             />
+          ) : null}
+          {contact?.branchAddress ? (
+            <ContactRow icon={<MapPin size={18} />} label="Branch" value={contact.branchAddress} />
           ) : null}
           {contact?.openingHours ? (
             <ContactRow icon={<Clock size={18} />} label="Opening hours" value={contact.openingHours} />

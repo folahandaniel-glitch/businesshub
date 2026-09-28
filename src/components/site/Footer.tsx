@@ -8,6 +8,7 @@ export type FooterContact = {
   whatsappNumber?: string | null;
   email?: string | null;
   address?: string | null;
+  branchAddress?: string | null;
   openingHours?: string | null;
 };
 
@@ -71,6 +72,9 @@ export function Footer({
               <ContactRow icon={<Mail size={15} />} href={`mailto:${contact.email}`} text={contact.email} />
             ) : null}
             {contact?.address ? <ContactRow icon={<MapPin size={15} />} text={contact.address} /> : null}
+            {contact?.branchAddress ? (
+              <ContactRow icon={<MapPin size={15} />} text={`Branch: ${contact.branchAddress}`} />
+            ) : null}
             {contact?.openingHours ? <ContactRow icon={<Clock size={15} />} text={contact.openingHours} /> : null}
           </ul>
         </div>

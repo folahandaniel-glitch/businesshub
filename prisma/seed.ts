@@ -308,9 +308,11 @@ async function main() {
       companyName: 'BUSINESS-HUB COMPUTERS',
       registrationNumber: 'RC: 3001886',
       logoUrl: '/logo.jpeg',
+      tagline: 'Quality Technology. Trusted Service.',
       description:
         'BUSINESS-HUB COMPUTERS supplies laptops, desktops, components, printers, networking and security equipment to businesses, schools and individuals across Nigeria, with warranty support and nationwide delivery.',
-      website: 'https://www.businesshubcomputers.com',
+      aboutText:
+        'Every product is supplied with attention to quality, and our customers receive a warranty on applicable products as stated on the receipt. Whether you need one laptop or a complete IT setup, Business-Hub Computers is ready to provide dependable technology solutions.',
       businessHours: 'Monday to Saturday, 8:00am to 6:00pm'
     }
   });
@@ -320,23 +322,31 @@ async function main() {
     update: {},
     create: {
       id: 'singleton',
-      primaryPhone: '0803 000 0000',
-      secondaryPhone: '0805 000 0000',
-      whatsappNumber: '0803 000 0000',
-      email: 'sales@businesshubcomputers.com',
-      supportEmail: 'support@businesshubcomputers.com',
-      address: 'Oketedo, 9VRM+896, Iya Olobe Oketedo Street, Ibadan 200284, Oyo, Nigeria',
+      primaryPhone: '08033941858',
+      whatsappNumber: '+234 803 394 1858',
+      email: 'businesshubby@gmail.com',
+      address: 'Akinkunmi Nigeria Building, Iyaolobe, Queen Cinema, Beside, Gastab Filling Station, Ibadan',
+      branchAddress: 'Signs and Wonders Building, Iyaolobe, Queen Cinema, Beside, Gastab Filling Station, Ibadan',
       openingHours: 'Monday to Saturday, 8:00am to 6:00pm',
       mapsLink: 'https://www.google.com/maps/search/?api=1&query=9VRM%2B896+Iya+Olobe+Oketedo+Street+Ibadan+Oyo+Nigeria'
     }
   });
 
-  const socials = ['Facebook', 'WhatsApp', 'Instagram', 'TikTok', 'Telegram', 'LinkedIn', 'X'];
-  for (const [i, platform] of socials.entries()) {
+  const socials: { platform: string; url: string; isActive: boolean }[] = [
+    { platform: 'Facebook', url: 'https://www.facebook.com/BusinessHubcomputers', isActive: true },
+    { platform: 'Instagram', url: 'https://www.instagram.com/businesshub_computers?stkn=OWhjamx0eTdodzR1', isActive: true },
+    { platform: 'TikTok', url: 'https://tiktok.com/@bizhubb', isActive: true },
+    { platform: 'YouTube', url: 'https://www.youtube.com/@Business-HubComputers', isActive: true },
+    { platform: 'WhatsApp', url: '', isActive: false },
+    { platform: 'Telegram', url: '', isActive: false },
+    { platform: 'LinkedIn', url: '', isActive: false },
+    { platform: 'X', url: '', isActive: false }
+  ];
+  for (const [i, s] of socials.entries()) {
     await prisma.socialLink.upsert({
-      where: { platform },
+      where: { platform: s.platform },
       update: {},
-      create: { platform, url: '', isActive: false, sortOrder: i }
+      create: { platform: s.platform, url: s.url, isActive: s.isActive, sortOrder: i }
     });
   }
 

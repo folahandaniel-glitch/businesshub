@@ -580,7 +580,9 @@ model BusinessInformation {
   companyName        String   @default("BUSINESS-HUB COMPUTERS")
   registrationNumber String   @default("RC: 3001886")
   logoUrl            String?
+  tagline            String?
   description        String?
+  aboutText          String?
   website            String?
   businessHours      String?
   updatedAt          DateTime @updatedAt
@@ -594,6 +596,7 @@ model ContactInformation {
   email          String?
   supportEmail   String?
   address        String?
+  branchAddress  String?
   openingHours   String?
   mapsLink       String?
   updatedAt      DateTime @updatedAt
