@@ -9,6 +9,7 @@ import { getCartItemCount } from '@/lib/cart';
 import { getWishlistCount } from '@/lib/wishlist';
 import { getCurrentCustomer } from '@/lib/orders';
 
+import { organizationJsonLd } from "@/lib/seo-kit";
 const display = Archivo({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
@@ -68,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-NG" className={`${display.variable} ${body.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
         <Header
           phone={contact?.primaryPhone ?? ''}
           cartCount={cartCount}

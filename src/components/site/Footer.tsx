@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react';
 import { siteConfig, footerLinks } from '@/lib/site-config';
 
+import { FodanCredit } from "@/components/fodan-credit";
 export type FooterContact = {
   primaryPhone?: string | null;
   whatsappNumber?: string | null;
@@ -101,6 +102,7 @@ export function Footer({
           </div>
         </div>
       </div>
+      <FodanCredit />
     </footer>
   );
 }
